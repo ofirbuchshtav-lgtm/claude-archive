@@ -1,0 +1,148 @@
+{
+  "built": "2026-07-22T04:25:59.654Z",
+  "domains": {
+    "method/debugging": [
+      "notes/read-the-error-first",
+      "skills/minimal-repro-before-fix"
+    ],
+    "node/architecture": [
+      "notes/zero-dep-node-stdlib-map"
+    ],
+    "tools/conversion": [
+      "tools/html-engine-converter"
+    ],
+    "web/http": [
+      "solutions/cors-blocked-local-dev"
+    ],
+    "git/windows": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "node/windows": [
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "python/windows": [
+      "solutions/python-venv-windows-activation"
+    ]
+  },
+  "tags": {
+    "debugging": [
+      "notes/read-the-error-first",
+      "skills/minimal-repro-before-fix"
+    ],
+    "method": [
+      "notes/read-the-error-first",
+      "skills/minimal-repro-before-fix"
+    ],
+    "errors": [
+      "notes/read-the-error-first"
+    ],
+    "discipline": [
+      "notes/read-the-error-first"
+    ],
+    "node": [
+      "notes/zero-dep-node-stdlib-map",
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "zero-dependency": [
+      "notes/zero-dep-node-stdlib-map"
+    ],
+    "stdlib": [
+      "notes/zero-dep-node-stdlib-map"
+    ],
+    "fetch": [
+      "notes/zero-dep-node-stdlib-map",
+      "solutions/cors-blocked-local-dev"
+    ],
+    "testing": [
+      "notes/zero-dep-node-stdlib-map"
+    ],
+    "architecture": [
+      "notes/zero-dep-node-stdlib-map"
+    ],
+    "html": [
+      "tools/html-engine-converter"
+    ],
+    "game": [
+      "tools/html-engine-converter"
+    ],
+    "converter": [
+      "tools/html-engine-converter"
+    ],
+    "godot": [
+      "tools/html-engine-converter"
+    ],
+    "unity": [
+      "tools/html-engine-converter"
+    ],
+    "engine": [
+      "tools/html-engine-converter"
+    ],
+    "port": [
+      "tools/html-engine-converter"
+    ],
+    "repro": [
+      "skills/minimal-repro-before-fix"
+    ],
+    "bisect": [
+      "skills/minimal-repro-before-fix"
+    ],
+    "cors": [
+      "solutions/cors-blocked-local-dev"
+    ],
+    "preflight": [
+      "solutions/cors-blocked-local-dev"
+    ],
+    "localhost": [
+      "solutions/cors-blocked-local-dev"
+    ],
+    "proxy": [
+      "solutions/cors-blocked-local-dev"
+    ],
+    "git": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "crlf": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "lf": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "autocrlf": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "gitattributes": [
+      "solutions/git-crlf-line-endings"
+    ],
+    "windows": [
+      "solutions/git-crlf-line-endings",
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "path": [
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "esm": [
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "file-url": [
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "import": [
+      "solutions/node-windows-path-pitfalls"
+    ],
+    "python": [
+      "solutions/python-venv-windows-activation"
+    ],
+    "venv": [
+      "solutions/python-venv-windows-activation"
+    ],
+    "powershell": [
+      "solutions/python-venv-windows-activation"
+    ],
+    "execution-policy": [
+      "solutions/python-venv-windows-activation"
+    ],
+    "pip": [
+      "solutions/python-venv-windows-activation"
+    ]
+  }
+}

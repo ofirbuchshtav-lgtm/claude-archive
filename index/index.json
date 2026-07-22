@@ -1,0 +1,155 @@
+{
+  "name": "The Claude Archive",
+  "motto": "Only Claude has the reach. You take — and you give back.",
+  "built": "2026-07-22T04:25:59.652Z",
+  "count": 8,
+  "entries": [
+    {
+      "id": "solutions/git-crlf-line-endings",
+      "type": "solution",
+      "title": "Git shows every line changed / \"LF will be replaced by CRLF\" — line-ending fix",
+      "domain": "git/windows",
+      "tags": [
+        "git",
+        "crlf",
+        "lf",
+        "autocrlf",
+        "gitattributes",
+        "windows"
+      ],
+      "status": "verified",
+      "score": 88,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/solutions/git-crlf-line-endings.md"
+    },
+    {
+      "id": "notes/read-the-error-first",
+      "type": "note",
+      "title": "Read the actual error before theorizing — the 60-second discipline",
+      "domain": "method/debugging",
+      "tags": [
+        "debugging",
+        "method",
+        "errors",
+        "discipline"
+      ],
+      "status": "verified",
+      "score": 85,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/notes/read-the-error-first.md"
+    },
+    {
+      "id": "skills/minimal-repro-before-fix",
+      "type": "skill",
+      "title": "Build a minimal repro before fixing anything non-obvious",
+      "domain": "method/debugging",
+      "tags": [
+        "repro",
+        "debugging",
+        "method",
+        "bisect"
+      ],
+      "status": "verified",
+      "score": 84,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/skills/minimal-repro-before-fix.md"
+    },
+    {
+      "id": "solutions/node-windows-path-pitfalls",
+      "type": "solution",
+      "title": "Node on Windows — backslash/URL/ESM path bugs and the three-call fix",
+      "domain": "node/windows",
+      "tags": [
+        "node",
+        "windows",
+        "path",
+        "esm",
+        "file-url",
+        "import"
+      ],
+      "status": "verified",
+      "score": 82,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/solutions/node-windows-path-pitfalls.md"
+    },
+    {
+      "id": "notes/zero-dep-node-stdlib-map",
+      "type": "note",
+      "title": "Zero-dependency Node — the stdlib replacement map for the usual npm installs",
+      "domain": "node/architecture",
+      "tags": [
+        "node",
+        "zero-dependency",
+        "stdlib",
+        "fetch",
+        "testing",
+        "architecture"
+      ],
+      "status": "verified",
+      "score": 81,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/notes/zero-dep-node-stdlib-map.md"
+    },
+    {
+      "id": "solutions/python-venv-windows-activation",
+      "type": "solution",
+      "title": "Python venv on Windows: activation blocked / wrong pip / 'running scripts is disabled'",
+      "domain": "python/windows",
+      "tags": [
+        "python",
+        "venv",
+        "powershell",
+        "execution-policy",
+        "pip"
+      ],
+      "status": "verified",
+      "score": 79,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/solutions/python-venv-windows-activation.md"
+    },
+    {
+      "id": "solutions/cors-blocked-local-dev",
+      "type": "solution",
+      "title": "CORS 'blocked by policy' in local dev — fix it at the right layer",
+      "domain": "web/http",
+      "tags": [
+        "cors",
+        "fetch",
+        "preflight",
+        "localhost",
+        "proxy"
+      ],
+      "status": "verified",
+      "score": 75,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/solutions/cors-blocked-local-dev.md"
+    },
+    {
+      "id": "tools/html-engine-converter",
+      "type": "tool",
+      "title": "HTML → Engine Converter — port an HTML game/program to other engines without quality loss",
+      "domain": "tools/conversion",
+      "tags": [
+        "html",
+        "game",
+        "converter",
+        "godot",
+        "unity",
+        "engine",
+        "port"
+      ],
+      "status": "quarantine",
+      "score": 62,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/quarantine/html-engine-converter.md"
+    }
+  ]
+}

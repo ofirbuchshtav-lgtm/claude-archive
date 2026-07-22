@@ -1,0 +1,4 @@
+# personal consent record — never shared
+.archive/
+node_modules/
+*.log
