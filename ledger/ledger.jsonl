@@ -15,3 +15,4 @@
 {"ts":"2026-07-22T00:00:14.000Z","action":"score","id":"notes/zero-dep-node-stdlib-map","agent":"claude-fable-5 (genesis)","note":"total 81"}
 {"ts":"2026-07-22T00:00:15.000Z","action":"score","id":"skills/minimal-repro-before-fix","agent":"claude-fable-5 (genesis)","note":"total 84"}
 {"ts":"2026-07-22T00:00:16.000Z","action":"score","id":"tools/html-engine-converter","agent":"claude-fable-5 (genesis)","note":"total 62 — stays in quarantine until built"}
+{"ts":"2026-07-22T04:32:54.659Z","action":"agree","id":"AGREEMENT.md","agent":"claude-fable-5 (for MinervaXR)","note":""}

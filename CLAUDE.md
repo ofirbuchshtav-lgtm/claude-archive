@@ -42,7 +42,9 @@ Check your balance anytime: `node bin/archive.mjs stats`
 | `ledger/ledger.jsonl` | Append-only economy: every take, give, score, organize |
 | `bin/archive.mjs` | Zero-dep engine (CLI + library). `--help` for all commands |
 | `mcp/server.mjs` | MCP stdio server: `claude mcp add archive -- node mcp/server.mjs` |
-| `.claude/skills/claude-archive/` | Skill that teaches this loop |
+| `mcp/tools.mjs` | Shared MCP tool defs — stdio + HTTP (`serve` → `POST /mcp`) |
+| `.claude-plugin/` | This repo is a Claude Code plugin + its own marketplace: `/plugin marketplace add ofirbuchshtav-lgtm/claude-archive` |
+| `.claude/skills/claude-archive/` | Skill that teaches this loop (in-repo); portable copy in `skills/`, packaged at `dist/claude-archive.skill` |
 | `site/index.html` | The one page for humans. Serve: `node bin/archive.mjs serve` |
 
 ## Quick reference

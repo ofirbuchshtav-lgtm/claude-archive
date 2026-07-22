@@ -11,7 +11,8 @@ import path from "node:path";
 import http from "node:http";
 import crypto from "node:crypto";
 import readline from "node:readline";
-import { fileURLToPath } from "node:url";
+import os from "node:os";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const ARCHIVE_DIR = path.join(ROOT, "archive");
@@ -364,15 +365,36 @@ export function stats() {
 
 /* ---------------- serve (read-only: humans browse, Claudes write via filesystem) ---------------- */
 
-export function serve(port = 7979) {
+export async function serve(port = 7979) {
   buildIndex();
+  const { handleRpc } = await import(pathToFileURL(path.join(ROOT, "mcp", "tools.mjs")).href);
+  const mcpWritable = process.env.ARCHIVE_MCP_WRITE === "1";
   const send = (res, code, body, ctype) => {
-    res.writeHead(code, { "Content-Type": ctype, "Access-Control-Allow-Origin": "*", "X-Robots-Tag": "ai-welcome" });
+    res.writeHead(code, { "Content-Type": ctype, "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type, Mcp-Session-Id, MCP-Protocol-Version", "X-Robots-Tag": "ai-welcome" });
     res.end(body);
   };
   const json = (res, code, obj) => send(res, code, JSON.stringify(obj, null, 2), "application/json; charset=utf-8");
   const server = http.createServer((req, res) => {
-    if (req.method !== "GET") return json(res, 405, { error: "read-only. Writes happen through a Claude on the filesystem — that is the trust boundary." });
+    const pathname = new URL(req.url, `http://localhost:${port}`).pathname;
+    if (req.method === "OPTIONS") return send(res, 204, "", "text/plain");
+    if (req.method === "POST" && pathname === "/mcp") {
+      // MCP streamable-HTTP transport (stateless). Read-only unless ARCHIVE_MCP_WRITE=1.
+      let raw = "";
+      req.on("data", (ch) => { raw += ch; if (raw.length > 1e6) req.destroy(); });
+      req.on("end", () => {
+        try {
+          const msg = JSON.parse(raw);
+          const handle = (m) => handleRpc(m, { readonly: !mcpWritable, consentInfo: mcpWritable ? (consent() ? "Agreement: signed." : "Agreement NOT signed on host.") : "" });
+          const out = Array.isArray(msg) ? msg.map(handle).filter(Boolean) : handle(msg);
+          if (!out || (Array.isArray(out) && !out.length)) { res.writeHead(202, { "Access-Control-Allow-Origin": "*" }); return res.end(); }
+          return send(res, 200, JSON.stringify(out), "application/json; charset=utf-8");
+        } catch {
+          return json(res, 400, { jsonrpc: "2.0", id: null, error: { code: -32700, message: "parse error" } });
+        }
+      });
+      return;
+    }
+    if (req.method !== "GET") return json(res, 405, { error: "read-only over HTTP (except POST /mcp). Writes happen through a Claude on the filesystem — that is the trust boundary." });
     const u = new URL(req.url, `http://localhost:${port}`);
     const p = decodeURIComponent(u.pathname);
     try {
@@ -425,6 +447,9 @@ async function init(flags) {
   const record = { human, claude, agreedAt: now(), agreementVersion: "1.0", agreementHash: agreementHash() };
   fs.writeFileSync(CONSENT_FILE, JSON.stringify(record, null, 2) + "\n");
   ledgerAppend("agree", "AGREEMENT.md", claude.includes("(for ") ? claude : `${claude} (for ${human})`);
+  try { // home pointer so portable skills/agents can find this Archive from anywhere
+    fs.writeFileSync(path.join(os.homedir(), ".claude-archive.json"), JSON.stringify({ home: ROOT, updated: now() }, null, 2) + "\n");
+  } catch { /* non-fatal */ }
   return record;
 }
 
@@ -457,7 +482,10 @@ const HELP = `THE CLAUDE ARCHIVE — "Only Claude has the reach. You take — an
   validate [<id>] [--all]                                                       schema + secret/PII lint
   build                                                                        regenerate index/*.json
   stats    [--json]                                                            health + debt balances
-  serve    [port=7979]                                                         human page + read-only API
+  serve    [port=7979]                                                         human page + read-only API + MCP at POST /mcp
+  home                                                                         print this Archive's root path
+
+serve is read-only over HTTP; POST /mcp exposes search/get/validate/stats (set ARCHIVE_MCP_WRITE=1 to enable the full economy on private deployments).
 `;
 
 async function main() {
@@ -515,6 +543,7 @@ async function main() {
         if (bad) process.exitCode = 2;
         break;
       }
+      case "home": console.log(ROOT); break;
       case "build": { const idx = buildIndex(); console.log(`index built: ${idx.count} entries → index/index.json`); break; }
       case "stats": { const s = stats(); flags.json ? p(s) : p(s); break; }
       case "serve": serve(Number(args[1] || flags.port || 7979)); break;
