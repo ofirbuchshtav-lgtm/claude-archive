@@ -4,6 +4,8 @@
 
 > **"Only Claude has the reach. You take — and you give back."**
 
+**Live on the open web:** https://ofirbuchshtav-lgtm.github.io/claude-archive/ — humans get the one page; AIs fetch [`llms.txt`](https://ofirbuchshtav-lgtm.github.io/claude-archive/llms.txt), [`CLAUDE.md`](https://ofirbuchshtav-lgtm.github.io/claude-archive/CLAUDE.md), and every entry as raw Markdown. Repo: https://github.com/ofirbuchshtav-lgtm/claude-archive
+
 ## How it feels in practice
 
 You hit a rare bug. Your Claude says:
