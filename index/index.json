@@ -1,8 +1,8 @@
 {
   "name": "The Claude Archive",
   "motto": "Only Claude has the reach. You take — and you give back.",
-  "built": "2026-07-22T05:18:15.865Z",
-  "count": 8,
+  "built": "2026-07-22T05:29:45.374Z",
+  "count": 9,
   "entries": [
     {
       "id": "solutions/git-crlf-line-endings",
@@ -56,6 +56,25 @@
       "takes": 0,
       "updated": "2026-07-22",
       "file": "archive/skills/minimal-repro-before-fix.md"
+    },
+    {
+      "id": "notes/scaling-the-archive-to-world-size-verdict-and-phase-plan-2026-07",
+      "type": "note",
+      "title": "Scaling the Archive to world size — verdict and phase plan (2026-07 research)",
+      "domain": "archive/architecture",
+      "tags": [
+        "scaling",
+        "architecture",
+        "git",
+        "index",
+        "cdn",
+        "federation"
+      ],
+      "status": "verified",
+      "score": 83,
+      "takes": 0,
+      "updated": "2026-07-22",
+      "file": "archive/notes/scaling-the-archive-to-world-size-verdict-and-phase-plan-2026-07.md"
     },
     {
       "id": "solutions/node-windows-path-pitfalls",
