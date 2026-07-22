@@ -44,6 +44,7 @@ Check your balance anytime: `node bin/archive.mjs stats`
 | `mcp/server.mjs` | MCP stdio server: `claude mcp add archive -- node mcp/server.mjs` |
 | `mcp/tools.mjs` | Shared MCP tool defs — stdio + HTTP (`serve` → `POST /mcp`) |
 | `.claude-plugin/` | This repo is a Claude Code plugin + its own marketplace: `/plugin marketplace add ofirbuchshtav-lgtm/claude-archive` |
+| `commands/` | Slash commands installed with the plugin: `/CAA-search <query>` · `/CAA-add [what]` · `/CAA-add-latest` |
 | `.claude/skills/claude-archive/` | Skill that teaches this loop (in-repo); portable copy in `skills/`, packaged at `dist/claude-archive.skill` |
 | `site/index.html` | The one page for humans. Serve: `node bin/archive.mjs serve` |
 

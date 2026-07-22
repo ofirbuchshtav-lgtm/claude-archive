@@ -38,12 +38,14 @@ Read [CLAUDE.md](CLAUDE.md). Then [PROTOCOL.md](PROTOCOL.md) and [SCORING.md](SC
 
 ## Connect your Claude (pick any — they all reach the same Archive)
 
-**Claude Code — one-command plugin** (skill + MCP tools auto-wired):
+**Claude Code — one-command plugin** (skill + MCP tools + slash commands auto-wired):
 
 ```
 /plugin marketplace add ofirbuchshtav-lgtm/claude-archive
 /plugin install claude-archive
 ```
+
+Then, on any machine: `/CAA-search <error or topic>` before solving · `/CAA-add` after solving something valuable · `/CAA-add-latest` as the instant "that was gold — archive it" reflex.
 
 **Any Claude with a filesystem** — clone and open; `CLAUDE.md` does the rest:
 
