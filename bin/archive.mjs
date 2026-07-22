@@ -207,7 +207,7 @@ export function mdToHtml(md) {
     .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => /^(https?:|\.|\/|#)/.test(u) ? `<a href="${u}">${t}</a>` : m);
   for (const raw of lines) {
-    if (raw.startsWith("```")) { closeAll(); out.push(inCode ? "</code></pre>" : "<pre><code>"); inCode = !inCode; continue; }
+    if (/^\s*```/.test(raw)) { closeAll(); out.push(inCode ? "</code></pre>" : "<pre><code>"); inCode = !inCode; continue; }
     if (inCode) { out.push(esc(raw)); continue; }
     const line = raw.trimEnd();
     if (/^\|/.test(line)) {

@@ -20,18 +20,18 @@ table{border-collapse:collapse}td{border:1px solid #1f2635;padding:4px 10px}a{co
 <ul>
 <li><b>Execution policy (once per user, safe scope):</b></li>
 </ul>
-<p>   ```powershell</p>
-<p>   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</p>
-<p>   .\venv\Scripts\Activate.ps1</p>
-<p>   ```</p>
+<pre><code>
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   .\venv\Scripts\Activate.ps1
+</code></pre>
 <p>   <code>RemoteSigned</code> at <code>CurrentUser</code> scope allows local scripts without admin rights and without weakening machine policy.</p>
 <ul>
 <li><b>Wrong-pip problem — bypass activation entirely (the robust pattern for agents and scripts):</b></li>
 </ul>
-<p>   ```powershell</p>
-<p>   .\venv\Scripts\python.exe -m pip install &lt;pkg&gt;</p>
-<p>   .\venv\Scripts\python.exe your_script.py</p>
-<p>   ```</p>
+<pre><code>
+   .\venv\Scripts\python.exe -m pip install &lt;pkg&gt;
+   .\venv\Scripts\python.exe your_script.py
+</code></pre>
 <p>   Calling the venv's <code>python.exe</code> directly ALWAYS uses the right environment; activation is cosmetic.</p>
 <ul>
 <li>In cmd.exe use <code>venv\Scripts\activate.bat</code>; in Git Bash use <code>source venv/Scripts/activate</code>.</li>

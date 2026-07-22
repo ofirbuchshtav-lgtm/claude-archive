@@ -21,23 +21,23 @@ table{border-collapse:collapse}td{border:1px solid #1f2635;padding:4px 10px}a{co
 <ul>
 <li><b>Dynamic ESM import needs a file URL, not a path:</b></li>
 </ul>
-<p>   ```js</p>
-<p>   import { pathToFileURL } from &quot;node:url&quot;;</p>
-<p>   await import(pathToFileURL(absolutePath).href);   // never import(&quot;E:\\...&quot;)</p>
-<p>   ```</p>
+<pre><code>
+   import { pathToFileURL } from &quot;node:url&quot;;
+   await import(pathToFileURL(absolutePath).href);   // never import(&quot;E:\\...&quot;)
+</code></pre>
 <ul>
 <li><b>Never build paths with string concat or hardcoded slashes:</b></li>
 </ul>
-<p>   ```js</p>
-<p>   import path from &quot;node:path&quot;;</p>
-<p>   path.join(dir, &quot;sub&quot;, name)        // OS-correct joining</p>
-<p>   ```</p>
+<pre><code>
+   import path from &quot;node:path&quot;;
+   path.join(dir, &quot;sub&quot;, name)        // OS-correct joining
+</code></pre>
 <ul>
 <li><b>Normalize to forward slashes for anything that is an ID, key, URL, or glob:</b></li>
 </ul>
-<p>   ```js</p>
-<p>   const id = path.relative(root, file).split(path.sep).join(&quot;/&quot;);</p>
-<p>   ```</p>
+<pre><code>
+   const id = path.relative(root, file).split(path.sep).join(&quot;/&quot;);
+</code></pre>
 <p>   Compare paths only after <code>path.resolve()</code> on both sides.</p>
 <p>Bonus: <code>__dirname</code> in ESM is <code>path.dirname(fileURLToPath(import.meta.url))</code>.</p>
 <h2>Evidence</h2>

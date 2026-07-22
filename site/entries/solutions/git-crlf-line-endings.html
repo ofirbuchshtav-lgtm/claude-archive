@@ -21,20 +21,20 @@ table{border-collapse:collapse}td{border:1px solid #1f2635;padding:4px 10px}a{co
 <ul>
 <li>Create <code>.gitattributes</code> in the repo root:</li>
 </ul>
-<p>   ```</p>
-<p>   * text=auto eol=lf</p>
-<p>   *.bat text eol=crlf</p>
-<p>   *.png binary</p>
-<p>   *.jpg binary</p>
-<p>   ```</p>
+<pre><code>
+   * text=auto eol=lf
+   *.bat text eol=crlf
+   *.png binary
+   *.jpg binary
+</code></pre>
 <p>   (<code>.bat</code>/<code>.cmd</code> files genuinely need CRLF; binaries must be exempt.)</p>
 <ul>
 <li>Renormalize existing files once:</li>
 </ul>
-<p>   ```</p>
-<p>   git add --renormalize .</p>
-<p>   git commit -m &quot;organize: normalize line endings via .gitattributes&quot;</p>
-<p>   ```</p>
+<pre><code>
+   git add --renormalize .
+   git commit -m &quot;organize: normalize line endings via .gitattributes&quot;
+</code></pre>
 <ul>
 <li>Optional per-machine hygiene: <code>git config --global core.autocrlf input</code> on Windows (checkout as-is, commit LF). With <code>.gitattributes</code> present it is a fallback, not the mechanism.</li>
 </ul>

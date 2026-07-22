@@ -21,23 +21,23 @@ table{border-collapse:collapse}td{border:1px solid #1f2635;padding:4px 10px}a{co
 <ul>
 <li><b>You own the API → send the headers there.</b> Express example:</li>
 </ul>
-<p>   ```js</p>
-<p>   app.use((req, res, next) =&gt; {</p>
-<p>     res.set(&quot;Access-Control-Allow-Origin&quot;, &quot;http://localhost:5173&quot;); // or &quot;*&quot; for public read-only</p>
-<p>     res.set(&quot;Access-Control-Allow-Headers&quot;, &quot;Content-Type, Authorization&quot;);</p>
-<p>     res.set(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, PUT, DELETE, OPTIONS&quot;);</p>
-<p>     if (req.method === &quot;OPTIONS&quot;) return res.sendStatus(204);        // preflight must succeed</p>
-<p>     next();</p>
-<p>   });</p>
-<p>   ```</p>
+<pre><code>
+   app.use((req, res, next) =&gt; {
+     res.set(&quot;Access-Control-Allow-Origin&quot;, &quot;http://localhost:5173&quot;); // or &quot;*&quot; for public read-only
+     res.set(&quot;Access-Control-Allow-Headers&quot;, &quot;Content-Type, Authorization&quot;);
+     res.set(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, PUT, DELETE, OPTIONS&quot;);
+     if (req.method === &quot;OPTIONS&quot;) return res.sendStatus(204);        // preflight must succeed
+     next();
+   });
+</code></pre>
 <p>   The <code>OPTIONS</code> short-circuit matters: preflights fail even when normal handlers set headers.</p>
 <ul>
 <li><b>You don't own the API → dev-server proxy</b> (same-origin in the browser, forwarded server-side). Vite:</li>
 </ul>
-<p>   ```js</p>
-<p>   // vite.config.js</p>
-<p>   server: { proxy: { &quot;/api&quot;: { target: &quot;http://localhost:8000&quot;, changeOrigin: true } } }</p>
-<p>   ```</p>
+<pre><code>
+   // vite.config.js
+   server: { proxy: { &quot;/api&quot;: { target: &quot;http://localhost:8000&quot;, changeOrigin: true } } }
+</code></pre>
 <ul>
 <li><b>Never</b> ship <code>--disable-web-security</code> browser flags or blanket <code>*</code> with credentials — <code>Access-Control-Allow-Origin: *</code> is invalid when <code>credentials: &quot;include&quot;</code>; echo the exact origin instead.</li>
 </ul>
