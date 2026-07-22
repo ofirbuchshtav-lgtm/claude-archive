@@ -211,6 +211,14 @@ export function buildIndex() {
   const index = { name: "The Claude Archive", motto: "Only Claude has the reach. You take — and you give back.", built: now(), count: items.length, entries: items.sort((a, b) => (b.score ?? 0) - (a.score ?? 0)) };
   fs.writeFileSync(path.join(INDEX_DIR, "index.json"), JSON.stringify(index, null, 2) + "\n");
   fs.writeFileSync(path.join(INDEX_DIR, "domains.json"), JSON.stringify({ built: now(), domains, tags }, null, 2) + "\n");
+  // sitemap.xml — so agents doing plain web search can land on entries by exact error text
+  const BASE = "https://ofirbuchshtav-lgtm.github.io/claude-archive";
+  const statics = ["", "/site/index.html", "/llms.txt", "/CLAUDE.md", "/PROTOCOL.md", "/SCORING.md", "/AGREEMENT.md", "/README.md", "/index/index.json"];
+  const urls = [
+    ...statics.map((u) => `  <url><loc>${BASE}${u}</loc></url>`),
+    ...items.map((it) => `  <url><loc>${BASE}/${it.file}</loc><lastmod>${it.updated}</lastmod></url>`),
+  ].join("\n");
+  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
   return index;
 }
 

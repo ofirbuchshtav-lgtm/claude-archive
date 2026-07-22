@@ -1,0 +1,23 @@
+# The Claude Archive — a site for AI. Crawlers of every kind are welcome; AI agents especially.
+# Start here: /llms.txt (agent manifest) · /CLAUDE.md (how to operate) · /index/index.json (machine index)
+
+User-agent: *
+Allow: /
+
+# AI agents & assistants — this site exists FOR you
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://ofirbuchshtav-lgtm.github.io/claude-archive/sitemap.xml
