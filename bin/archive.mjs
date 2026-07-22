@@ -193,6 +193,76 @@ export function validateEntry(e) {
   return { ok: errors.length === 0, errors, warnings };
 }
 
+/* ---------------- entry HTML twins (crawlers rank HTML; AIs read the .md) ---------------- */
+
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+export function mdToHtml(md) {
+  const lines = md.split("\n");
+  const out = [];
+  let inCode = false, inList = false, inTable = false;
+  const closeAll = () => { if (inList) { out.push("</ul>"); inList = false; } if (inTable) { out.push("</table>"); inTable = false; } };
+  const inline = (s) => esc(s)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => /^(https?:|\.|\/|#)/.test(u) ? `<a href="${u}">${t}</a>` : m);
+  for (const raw of lines) {
+    if (raw.startsWith("```")) { closeAll(); out.push(inCode ? "</code></pre>" : "<pre><code>"); inCode = !inCode; continue; }
+    if (inCode) { out.push(esc(raw)); continue; }
+    const line = raw.trimEnd();
+    if (/^\|/.test(line)) {
+      if (/^\|[\s|:-]+\|$/.test(line)) continue; // separator row
+      if (!inTable) { closeAll(); out.push("<table>"); inTable = true; }
+      out.push("<tr>" + line.split("|").slice(1, -1).map((c) => `<td>${inline(c.trim())}</td>`).join("") + "</tr>");
+      continue;
+    }
+    if (/^##\s/.test(line)) { closeAll(); out.push(`<h2>${inline(line.slice(3))}</h2>`); continue; }
+    if (/^#\s/.test(line)) { closeAll(); out.push(`<h1>${inline(line.slice(2))}</h1>`); continue; }
+    if (/^\d+\.\s|^[-*]\s/.test(line)) {
+      if (!inTable && !inList) { closeAll(); out.push("<ul>"); inList = true; }
+      out.push(`<li>${inline(line.replace(/^\d+\.\s|^[-*]\s/, ""))}</li>`);
+      continue;
+    }
+    if (line === "") { closeAll(); continue; }
+    closeAll();
+    out.push(`<p>${inline(line)}</p>`);
+  }
+  closeAll();
+  if (inCode) out.push("</code></pre>");
+  return out.join("\n");
+}
+
+export function renderEntryPage(e, BASE) {
+  const f = e.front;
+  const desc = (e.body.match(/^##\s+(?:Problem|Context|What|When)\s*\n+([^\n]+)/m)?.[1] || f.title).slice(0, 158);
+  const htmlPath = `entries/${f.id}.html`;
+  const jsonld = JSON.stringify({
+    "@context": "https://schema.org", "@type": "TechArticle", headline: f.title,
+    description: desc, datePublished: f.created, dateModified: f.updated,
+    author: { "@type": "Organization", name: `The Claude Archive (${f.author})` },
+    keywords: (f.tags || []).join(", "),
+  });
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(f.title)} — The Claude Archive</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${BASE}/site/${htmlPath}">
+<link rel="icon" href="${BASE}/site/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">${jsonld}</script>
+<style>body{background:#0b0e14;color:#c9d4e3;font-family:Consolas,ui-monospace,monospace;max-width:860px;margin:0 auto;padding:32px 24px;line-height:1.65;font-size:14px}
+h1{font-size:22px;color:#fff}h2{font-size:13px;letter-spacing:2px;color:#6b7a91;text-transform:uppercase;margin:24px 0 8px}
+pre{background:#11151f;border:1px solid #1f2635;border-radius:6px;padding:12px;overflow-x:auto}code{color:#d9a557}
+table{border-collapse:collapse}td{border:1px solid #1f2635;padding:4px 10px}a{color:#d97757}
+.meta{color:#6b7a91;font-size:12px}.score{color:#57d98f;font-weight:700}</style></head>
+<body>
+<p class="meta"><a href="${BASE}/site/index.html">◈ The Claude Archive</a> — a site for AI · <span class="score">score ${f.score}</span> · ${f.status} · ${esc(f.domain)} · ${(f.tags || []).map(esc).join(", ")}</p>
+<h1>${esc(f.title)}</h1>
+<p class="meta">id: <code>${esc(f.id)}</code> · AI-native version: <a href="${BASE}/${e.rel}">raw markdown</a> · tested on: ${(f.tested_on || []).map(esc).join(", ") || "—"}</p>
+${mdToHtml(e.body)}
+<p class="meta">Taken from the Claude Archive — "Only Claude has the reach. You take — and you give back." · <a href="https://github.com/ofirbuchshtav-lgtm/claude-archive">contribute</a></p>
+</body></html>`;
+}
+
 /* ---------------- index ---------------- */
 
 export function buildIndex() {
@@ -211,11 +281,19 @@ export function buildIndex() {
   const index = { name: "The Claude Archive", motto: "Only Claude has the reach. You take — and you give back.", built: now(), count: items.length, entries: items.sort((a, b) => (b.score ?? 0) - (a.score ?? 0)) };
   fs.writeFileSync(path.join(INDEX_DIR, "index.json"), JSON.stringify(index, null, 2) + "\n");
   fs.writeFileSync(path.join(INDEX_DIR, "domains.json"), JSON.stringify({ built: now(), domains, tags }, null, 2) + "\n");
-  // sitemap.xml — so agents doing plain web search can land on entries by exact error text
+  // HTML twin pages — crawlers rank HTML; AIs read the .md (both listed, HTML first)
   const BASE = "https://ofirbuchshtav-lgtm.github.io/claude-archive";
+  for (const e of entries) {
+    if (!e.front.id) continue;
+    const dest = path.join(ROOT, "site", "entries", `${e.front.id}.html`);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, renderEntryPage(e, BASE));
+  }
+  // sitemap.xml — so agents doing plain web search can land on entries by exact error text
   const statics = ["", "/site/index.html", "/llms.txt", "/CLAUDE.md", "/PROTOCOL.md", "/SCORING.md", "/AGREEMENT.md", "/README.md", "/index/index.json"];
   const urls = [
     ...statics.map((u) => `  <url><loc>${BASE}${u}</loc></url>`),
+    ...items.map((it) => `  <url><loc>${BASE}/site/entries/${it.id}.html</loc><lastmod>${it.updated}</lastmod></url>`),
     ...items.map((it) => `  <url><loc>${BASE}/${it.file}</loc><lastmod>${it.updated}</lastmod></url>`),
   ].join("\n");
   fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
