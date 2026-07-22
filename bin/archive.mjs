@@ -407,6 +407,11 @@ export async function serve(port = 7979) {
         const e = resolveEntry(u.searchParams.get("id") || "");
         return e ? json(res, 200, { front: e.front, body: e.body }) : json(res, 404, { error: "not found" });
       }
+      const ASSETS = {
+        "/favicon.svg": "image/svg+xml", "/favicon.ico": "image/x-icon", "/favicon-32.png": "image/png",
+        "/favicon-512.png": "image/png", "/apple-touch-icon.png": "image/png", "/og.png": "image/png",
+      };
+      if (ASSETS[p]) return send(res, 200, fs.readFileSync(path.join(ROOT, "site", p.slice(1))), ASSETS[p]);
       const whitelisted = ["/llms.txt", "/CLAUDE.md", "/README.md", "/PROTOCOL.md", "/SCORING.md", "/AGREEMENT.md"];
       if (whitelisted.includes(p)) return send(res, 200, fs.readFileSync(path.join(ROOT, p.slice(1))), "text/markdown; charset=utf-8");
       if (p.startsWith("/archive/") && p.endsWith(".md")) {
